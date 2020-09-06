@@ -7,6 +7,7 @@ namespace Iamvar\Rates\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Iamvar\Rates\Entity\Rate;
+use Iamvar\Rates\Repository\ActualRateRepository;
 use Iamvar\Rates\Service\RateLoader\RateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,16 +22,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class RatesController extends AbstractController
 {
-    private $em;
-    private $serializer;
-    private $rateLoaderService;
+    private EntityManagerInterface $em;
+    private ActualRateRepository $actualRateRepository;
+    private SerializerInterface $serializer;
+    private RateService $rateLoaderService;
 
     public function __construct(
         EntityManagerInterface $em,
+        ActualRateRepository $actualRateRepository,
         SerializerInterface $serializer,
         RateService $rateLoaderService
     ) {
         $this->em = $em;
+        $this->actualRateRepository = $actualRateRepository;
         $this->serializer = $serializer;
         $this->rateLoaderService = $rateLoaderService;
     }
@@ -64,6 +68,17 @@ final class RatesController extends AbstractController
             [],
             [Rate::PROP_FROM_DATE => 'DESC', Rate::PROP_SOURCE => 'DESC', Rate::PROP_WEIGHT => 'DESC']
         );
+        $data = $this->serializer->serialize($rates, JsonEncoder::FORMAT);
+
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
+    }
+
+    /**
+     * @Rest\Get("/latest")
+     */
+    public function findLatestAction(): JsonResponse
+    {
+        $rates = $this->actualRateRepository->getActualRates();
         $data = $this->serializer->serialize($rates, JsonEncoder::FORMAT);
 
         return new JsonResponse($data, Response::HTTP_OK, [], true);
