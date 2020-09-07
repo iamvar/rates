@@ -41,7 +41,7 @@ class CoindeskRateRepository implements RateRepositoryInterface
     {
         $json = $this->contentObtainer->getContent($this->url);
 
-        $rates = new RatesDTO();
+        $rates = [];
         foreach ($this->parseContent($json) as $date => $rate) {
             $rates[] = new RateDTO(
                 self::BASE_CURRENCY,
@@ -51,7 +51,7 @@ class CoindeskRateRepository implements RateRepositoryInterface
             );
         }
 
-        return $rates;
+        return new RatesDTO(...$rates);
     }
 
     private function parseContent(string $json): array

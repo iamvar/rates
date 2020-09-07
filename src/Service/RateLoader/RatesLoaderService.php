@@ -51,11 +51,11 @@ class RatesLoaderService
                 $rateDTO->getBaseCurrency(),
                 $rateDTO->getQuoteCurrency(),
                 $rateDTO->getRate(),
-                new DateTimeStringable($rateDTO->getDate()),
+                new DateTimeStringable($rateDTO->getDate()->format(DATE_ATOM)),
                 $source->getDefaultWeight()
             );
         }
 
-        $this->rateEntityManager->save($rates);
+        $this->rateEntityManager->save(...$rates);
     }
 }
