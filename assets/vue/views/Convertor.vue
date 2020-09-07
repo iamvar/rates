@@ -10,14 +10,14 @@
           <input type="number" v-model="amount" class="form-control">
         </div>
         <div class="form-group col-3">
-          <select v-model="baseCurrency" class="form-control">
+          <select v-model="baseCurrency" @change="onCurrencyChange($event)" class="form-control">
             <option v-for="option in currenciesList" v-bind:value="option">
               {{ option }}
             </option>
           </select>
         </div>
         <div class="form-group col-3">
-          <select v-model="quoteCurrency" class="form-control">
+          <select v-model="quoteCurrency" @change="onCurrencyChange($event)" class="form-control">
             <option v-for="option in currenciesList" v-bind:value="option">
               {{ option }}
             </option>
@@ -51,14 +51,15 @@ export default {
   name: "Convertor",
   data() {
     return {
-      amount: "0.0",
+      amount: 0,
+      rate: 0,
       baseCurrency: '',
       quoteCurrency: '',
     };
   },
   computed: {
     calculated() {
-      return this.amount * 2;
+      return this.amount * this.rate;
     },
     isLoading() {
       return this.$store.getters["actual/isLoading"];
@@ -77,6 +78,61 @@ export default {
     },
     currenciesList() {
       return this.$store.getters["actual/currencies"];
+    },
+  },
+  methods: {
+    onCurrencyChange(event) {
+      let rateValue = this.getRate(this.baseCurrency, this.quoteCurrency);
+      if (rateValue) {
+        this.rate = rateValue;
+      } else {
+        this.rate = 0;
+        this.error = 'Sorry, it is not possible to calculate the amount'
+      }
+    },
+    getRate() {
+      // try to get rate from existing ones or from reversed
+      let rateValue = this.getExplicitRate(this.baseCurrency, this.quoteCurrency);
+      if (rateValue) {
+        return rateValue;
+      }
+
+      // try to calculate with intermediate currency
+      // e.g. we have USDJPY JPYEUR -> get USDEUR as USDJPY*JPYEUR
+      for (const rate of Object.values(this.rates)) {
+        if (rate.baseCurrency === this.baseCurrency) {
+          let computed = this.getExplicitRate(rate.quoteCurrency, this.quoteCurrency);
+          if (computed) {
+            return computed * rate.rate;
+          }
+        }
+
+        // try to calculate with intermediate reverse currency
+        // e.g. we have JPYUSD EURJPY -> get USDEUR as EURJPY/JPYUSD
+        if (rate.quoteCurrency === this.baseCurrency) {
+          let computed = this.getExplicitRate(rate.baseCurrency, this.quoteCurrency);
+          if (computed) {
+            return computed / rate.rate;
+          }
+        }
+      }
+
+      return 0;
+    },
+    getExplicitRate(baseCurrency, quoteCurrency) {
+      if (baseCurrency === quoteCurrency) {
+        return 1;
+      }
+
+      let direct = baseCurrency + quoteCurrency;
+      if (direct in this.rates) {
+        return this.rates[direct].rate;
+      }
+
+      let reverse = quoteCurrency + baseCurrency;
+      if (reverse in this.rates) {
+        return 1 / this.rates[reverse].rate;
+      }
     },
   },
   created() {
