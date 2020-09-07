@@ -24,40 +24,46 @@ class Rate
 
     /**
      * @ORM\Id
-     * @ORM\Column(name="source", type="string")
+     * @ORM\Column(name="from_date", type="stringable_date", options={"comment":"date when the rate was set"})
+     */
+    private DateTimeInterface $fromDate;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="base_currency", type="string", length=3, options={"fixed":true, "comment":"base currency in ISO 4217"})
+     */
+    private string $baseCurrency;
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="quote_currency", type="string", length=3, options={"fixed":true, "comment":"quote currency in ISO 4217"})
+     */
+    private string $quoteCurrency;
+
+    /**
+     * @ORM\Id
      *
      * One Rate has one Source.
      * @ORM\OneToOne(targetEntity="Source")
-     * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="source", referencedColumnName="name")
      */
     private string $source;
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="base_currency", type="string")
-     */
-    private string $baseCurrency;
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="quote_currency", type="string")
-     */
-    private string $quoteCurrency;
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="from_date", type="stringable_date")
-     */
-    private DateTimeInterface $fromDate;
+
     /**
      * @ORM\Column(name="rate", type="float")
      */
     private float $rate;
+
     /**
-     * @ORM\Column(name="weight", type="integer")
+     * @ORM\Column(name="weight", type="integer", options={"comment":"bigger weight will be considered in case of concurrent rates from different sources"})
      */
     private int $weight;
+
     /**
      * @ORM\Column(name="created", type="datetime")
      */
     private DateTimeInterface $created;
+
     /**
      * @ORM\Column(name="updated", type="datetime")
      */
@@ -71,11 +77,11 @@ class Rate
         DateTimeInterface $fromDate,
         int $weight
     ) {
-        $this->source = $source;
+        $this->fromDate = new DateTimeStringable($fromDate->format(DATE_ATOM));
         $this->baseCurrency = $baseCurrency;
         $this->quoteCurrency = $quoteCurrency;
+        $this->source = $source;
         $this->rate = $rate;
-        $this->fromDate = $fromDate;
         $this->weight = $weight;
     }
 
@@ -140,10 +146,10 @@ class Rate
     public function getPrimaryKeyArray(): array
     {
         return [
-            self::PROP_SOURCE => $this->getSource(),
+            self::PROP_FROM_DATE => $this->getFromDate(),
             self::PROP_BASE_CURRENCY => $this->getBaseCurrency(),
             self::PROP_QUOTE_CURRENCY => $this->getQuoteCurrency(),
-            self::PROP_FROM_DATE => $this->getFromDate(),
+            self::PROP_SOURCE => $this->getSource(),
         ];
     }
 }

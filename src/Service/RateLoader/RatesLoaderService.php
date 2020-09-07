@@ -5,7 +5,6 @@ namespace Iamvar\Rates\Service\RateLoader;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Iamvar\Rates\Entity\DateTimeStringable;
 use Iamvar\Rates\Entity\Rate;
 use Iamvar\Rates\Entity\Source;
 use Iamvar\Rates\EntityManager\RateEntityManager;
@@ -51,7 +50,7 @@ class RatesLoaderService
                 $rateDTO->getBaseCurrency(),
                 $rateDTO->getQuoteCurrency(),
                 $rateDTO->getRate(),
-                new DateTimeStringable($rateDTO->getDate()->format(DATE_ATOM)),
+                $rateDTO->getDate(),
                 $source->getDefaultWeight()
             );
         }

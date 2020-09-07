@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Iamvar\Rates\Entity\Rate;
 use Iamvar\Rates\Repository\ActualRateRepository;
-use Iamvar\Rates\Service\RateLoader\RateService;
+use Iamvar\Rates\Service\RateLoader\RatesLoaderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,13 +25,13 @@ final class RatesController extends AbstractController
     private EntityManagerInterface $em;
     private ActualRateRepository $actualRateRepository;
     private SerializerInterface $serializer;
-    private RateService $rateLoaderService;
+    private RatesLoaderService $rateLoaderService;
 
     public function __construct(
         EntityManagerInterface $em,
         ActualRateRepository $actualRateRepository,
         SerializerInterface $serializer,
-        RateService $rateLoaderService
+        RatesLoaderService $rateLoaderService
     ) {
         $this->em = $em;
         $this->actualRateRepository = $actualRateRepository;
