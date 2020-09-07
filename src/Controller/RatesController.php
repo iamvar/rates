@@ -74,9 +74,9 @@ final class RatesController extends AbstractController
     }
 
     /**
-     * @Rest\Get("/latest")
+     * @Rest\Get("/actual")
      */
-    public function findLatestAction(): JsonResponse
+    public function findActualAction(): JsonResponse
     {
         $rates = $this->actualRateRepository->getActualRates();
         $data = $this->serializer->serialize($rates, JsonEncoder::FORMAT);

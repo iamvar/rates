@@ -9,7 +9,10 @@ export default {
     findAll() {
         return axios.get("/api/rates");
     },
+    findLatest() {
+        return axios.get("/api/actual");
+    },
     retrieve() {
         return axios.get("/api/retrieve");
-    }
+    },
 };

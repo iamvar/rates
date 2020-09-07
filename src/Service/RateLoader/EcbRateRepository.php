@@ -31,8 +31,8 @@ class EcbRateRepository implements RateRepositoryInterface
     private const DEFAULT_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
     private const BASE_CURRENCY = 'EUR';
 
-    private $url;
-    private $contentObtainer;
+    private string $url;
+    private ContentObtainerInterface $contentObtainer;
 
     public function __construct(ContentObtainerInterface $contentObtainer, string $url = self::DEFAULT_URL)
     {

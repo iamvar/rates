@@ -8,7 +8,7 @@ use IteratorAggregate;
 
 class Rates implements IteratorAggregate
 {
-    private $rates;
+    private array $rates;
 
     public function __construct(Rate ...$rates) {
         $this->rates = $rates;

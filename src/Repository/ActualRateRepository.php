@@ -24,7 +24,7 @@ class ActualRateRepository
      */
     public function getActualRates(): array
     {
-        $date = (new DateTime('now - 2 days'))->setTime(0,0,0,0);
+        $date = (new DateTime('now - 3 days'))->setTime(0,0,0,0);
 
         $qb = $this->em->createQueryBuilder()
             ->select([

@@ -29,8 +29,8 @@ class CoindeskRateRepository implements RateRepositoryInterface
     private const BASE_CURRENCY = 'BTC';
     private const QUOTE_CURRENCY = 'USD';
 
-    private $url;
-    private $contentObtainer;
+    private string $url;
+    private ContentObtainerInterface $contentObtainer;
 
     public function __construct(ContentObtainerInterface $contentObtainer, string $url = self::DEFAULT_URL)
     {

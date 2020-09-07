@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContentObtainer implements ContentObtainerInterface
 {
-    private $client;
+    private Client $client;
 
     public function __construct() {
         $this->client = new Client();
