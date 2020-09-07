@@ -25,6 +25,10 @@ class Rate
     /**
      * @ORM\Id
      * @ORM\Column(name="source", type="string")
+     *
+     * One Rate has one Source.
+     * @ORM\OneToOne(targetEntity="Source")
+     * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
      */
     private string $source;
     /**
@@ -59,12 +63,20 @@ class Rate
      */
     private DateTimeInterface $updated;
 
-    public function __construct(string $baseCurrency, string $quoteCurrency, float $rate, DateTimeInterface $fromDate)
-    {
+    public function __construct(
+        string $source,
+        string $baseCurrency,
+        string $quoteCurrency,
+        float $rate,
+        DateTimeInterface $fromDate,
+        int $weight
+    ) {
+        $this->source = $source;
         $this->baseCurrency = $baseCurrency;
         $this->quoteCurrency = $quoteCurrency;
         $this->rate = $rate;
         $this->fromDate = $fromDate;
+        $this->weight = $weight;
     }
 
     /**
@@ -90,12 +102,6 @@ class Rate
         return $this->source;
     }
 
-    public function setSource(string $source): self
-    {
-        $this->source = $source;
-        return $this;
-    }
-
     public function getCreated(): DateTimeInterface
     {
         return $this->created;
@@ -111,21 +117,9 @@ class Rate
         return $this->weight;
     }
 
-    public function setWeight(int $weight): self
-    {
-        $this->weight = $weight;
-        return $this;
-    }
-
     public function getFromDate(): DateTimeInterface
     {
         return $this->fromDate;
-    }
-
-    public function setFromDate(DateTime $fromDate): self
-    {
-        $this->fromDate = $fromDate;
-        return $this;
     }
 
     public function getBaseCurrency(): string
@@ -133,32 +127,14 @@ class Rate
         return $this->baseCurrency;
     }
 
-    public function setBaseCurrency(string $baseCurrency): self
-    {
-        $this->baseCurrency = $baseCurrency;
-        return $this;
-    }
-
     public function getQuoteCurrency(): string
     {
         return $this->quoteCurrency;
     }
 
-    public function setQuoteCurrency(string $quoteCurrency): self
-    {
-        $this->quoteCurrency = $quoteCurrency;
-        return $this;
-    }
-
     public function getRate(): float
     {
         return $this->rate;
-    }
-
-    public function setRate(float $rate): self
-    {
-        $this->rate = $rate;
-        return $this;
     }
 
     public function getPrimaryKeyArray(): array

@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Iamvar\Rates\Service\RateLoader;
 
 use DateTimeImmutable;
-use Iamvar\Rates\Entity\DateTimeStringable;
-use Iamvar\Rates\Entity\Rate;
-use Iamvar\Rates\Entity\Rates;
+use Iamvar\Rates\Service\RateLoader\DTO\RateDTO;
+use Iamvar\Rates\Service\RateLoader\DTO\RatesDTO;
 use Iamvar\Rates\Service\RateLoader\Exception\ParseException;
 
 /**
@@ -38,21 +37,21 @@ class CoindeskRateRepository implements RateRepositoryInterface
         $this->contentObtainer = $contentObtainer;
     }
 
-    public function getRates(): Rates
+    public function getRates(): RatesDTO
     {
         $json = $this->contentObtainer->getContent($this->url);
 
-        $ratesArray = [];
+        $rates = new RatesDTO();
         foreach ($this->parseContent($json) as $date => $rate) {
-            $ratesArray[] = new Rate(
+            $rates[] = new RateDTO(
                 self::BASE_CURRENCY,
                 self::QUOTE_CURRENCY,
                 (float)$rate,
-                new DateTimeStringable($date)
+                new DateTimeImmutable($date)
             );
         }
 
-        return new Rates(...$ratesArray);
+        return $rates;
     }
 
     private function parseContent(string $json): array

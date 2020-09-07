@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Iamvar\Rates\Service\RateLoader;
 
 use DateTimeImmutable;
-use Iamvar\Rates\Entity\DateTimeStringable;
-use Iamvar\Rates\Entity\Rate;
-use Iamvar\Rates\Entity\Rates;
+use Iamvar\Rates\Service\RateLoader\DTO\RateDTO;
+use Iamvar\Rates\Service\RateLoader\DTO\RatesDTO;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -40,22 +39,22 @@ class EcbRateRepository implements RateRepositoryInterface
         $this->contentObtainer = $contentObtainer;
     }
 
-    public function getRates(): Rates
+    public function getRates(): RatesDTO
     {
         $xml = $this->contentObtainer->getContent($this->url);
 
         $crawler = new Crawler($xml);
 
         $cube = $crawler->filter("gesmes|Envelope default|Cube default|Cube");
-        $date = new DateTimeStringable($cube->attr('time'));
+        $date = new DateTimeImmutable($cube->attr('time'));
 
-        $ratesArray = $cube->children()->each(fn($node, $i) => new Rate(
+        $ratesArray = $cube->children()->each(fn($node, $i) => new RateDTO(
             self::BASE_CURRENCY,
             $node->attr('currency'),
             (float)$node->attr('rate'),
             $date
         ));
 
-        return new Rates(...$ratesArray);
+        return new RatesDTO(...$ratesArray);
     }
 }

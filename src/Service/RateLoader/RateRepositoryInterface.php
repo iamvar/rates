@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Iamvar\Rates\Service\RateLoader;
 
-use Iamvar\Rates\Entity\Rates;
+use Iamvar\Rates\Service\RateLoader\DTO\RatesDTO;
 
 interface RateRepositoryInterface {
-    public function getRates(): Rates;
+    public function getRates(): RatesDTO;
 }
