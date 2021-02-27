@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Iamvar\Rates\Services\RateLoader\DTO\RateDTO;
 use Iamvar\Rates\Services\RateLoader\DTO\RatesDTO;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Parses content from ecb.europa.eu xml
@@ -31,14 +32,14 @@ class EcbRateRepository implements RateRepositoryInterface
     private const BASE_CURRENCY = 'EUR';
 
     public function __construct(
-        private ContentObtainerInterface $contentObtainer,
+        private HttpClientInterface $client,
         private string $url = self::DEFAULT_URL,
     ) {
     }
 
     public function getRates(): RatesDTO
     {
-        $xml = $this->contentObtainer->getContent($this->url);
+        $xml = $this->client->request('GET', $this->url)->getContent();
 
         $crawler = new Crawler($xml);
 

@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Iamvar\Rates\Services\RateLoader\DTO\RateDTO;
 use Iamvar\Rates\Services\RateLoader\DTO\RatesDTO;
 use Iamvar\Rates\Services\RateLoader\Exception\ParseException;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * parses json content from api.coindesk.com for BTC -> USD rate
@@ -29,17 +30,15 @@ class CoindeskRateRepository implements RateRepositoryInterface
     private const QUOTE_CURRENCY = 'USD';
 
     public function __construct(
-        private ContentObtainerInterface $contentObtainer,
+        private HttpClientInterface $client,
         private string $url = self::DEFAULT_URL,
     ) {
     }
 
     public function getRates(): RatesDTO
     {
-        $json = $this->contentObtainer->getContent($this->url);
-
         $rates = [];
-        foreach ($this->parseContent($json) as $date => $rate) {
+        foreach ($this->parseContent() as $date => $rate) {
             $rates[] = new RateDTO(
                 self::BASE_CURRENCY,
                 self::QUOTE_CURRENCY,
@@ -51,9 +50,11 @@ class CoindeskRateRepository implements RateRepositoryInterface
         return new RatesDTO(...$rates);
     }
 
-    private function parseContent(string $json): array
+    private function parseContent(): array
     {
-        $contentArray = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+        $response = $this->client->request('GET', $this->url);
+
+        $contentArray = $response->toArray();
         if (!isset($contentArray['bpi']) || !is_array($contentArray['bpi'])) {
             throw new ParseException('Could not find bpi section in json');
         }
