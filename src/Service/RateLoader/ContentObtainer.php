@@ -20,7 +20,7 @@ class ContentObtainer implements ContentObtainerInterface
         $response = $this->client->request('GET', $url);
 
         if ($response->getStatusCode() !== Response::HTTP_OK) {
-            throw new ObtainContentException("Error while obtaingn content from {$url}");
+            throw new ObtainContentException("Error while obtaining content from {$url}");
         }
 
         return $response->getBody()->getContents();

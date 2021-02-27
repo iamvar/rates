@@ -75,7 +75,7 @@ class Rate
         string $quoteCurrency,
         float $rate,
         DateTimeInterface $fromDate,
-        int $weight
+        int $weight,
     ) {
         $this->fromDate = new DateTimeStringable($fromDate->format(DATE_ATOM));
         $this->baseCurrency = $baseCurrency;

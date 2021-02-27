@@ -14,18 +14,11 @@ use Iamvar\Rates\EntityManager\RateEntityManager;
  */
 class RatesLoaderService
 {
-    private RateRepositoriesCollection $rateRepositoriesCollection;
-    private RateEntityManager $rateEntityManager;
-    private EntityManagerInterface $em;
-    
     public function __construct(
-        RateRepositoriesCollection $rateRepositoriesCollection,
-        RateEntityManager $rateEntityManager,
-        EntityManagerInterface $em
+        private RateRepositoriesCollection $rateRepositoriesCollection,
+        private RateEntityManager $rateEntityManager,
+        private EntityManagerInterface $em,
     ) {
-        $this->rateRepositoriesCollection = $rateRepositoriesCollection;
-        $this->rateEntityManager = $rateEntityManager;
-        $this->em = $em;
     }
     
     public function saveRates(): void

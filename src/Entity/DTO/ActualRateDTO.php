@@ -5,15 +5,12 @@ namespace Iamvar\Rates\Entity\DTO;
 
 class ActualRateDTO
 {
-    private string $baseCurrency;
-    private string $quoteCurrency;
-    private float $rate;
 
-    public function __construct(string $baseCurrency, string $quoteCurrency, float $rate)
-    {
-        $this->baseCurrency = $baseCurrency;
-        $this->quoteCurrency = $quoteCurrency;
-        $this->rate = $rate;
+    public function __construct(
+        private string $baseCurrency,
+        private string $quoteCurrency,
+        private float $rate,
+    ) {
     }
 
     public function getBaseCurrency(): string

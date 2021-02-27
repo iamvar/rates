@@ -7,17 +7,12 @@ use DateTimeInterface;
 
 class RateDTO
 {
-    private string $baseCurrency;
-    private string $quoteCurrency;
-    private float $rate;
-    private DateTimeInterface $date;
-
-    public function __construct(string $baseCurrency, string $quoteCurrency, float $rate, DateTimeInterface $date)
-    {
-        $this->baseCurrency = $baseCurrency;
-        $this->quoteCurrency = $quoteCurrency;
-        $this->rate = $rate;
-        $this->date = $date;
+    public function __construct(
+        private string $baseCurrency,
+        private string $quoteCurrency,
+        private float $rate,
+        private DateTimeInterface $date,
+    ) {
     }
 
     public function getBaseCurrency(): string

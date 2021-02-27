@@ -7,7 +7,7 @@ use Iamvar\Rates\Service\RateLoader\Exception\UnknownSourceException;
 
 class RateRepositoriesCollection
 {
-    private $repositories;
+    private array $repositories;
 
     public function __construct(array $repositories)
     {

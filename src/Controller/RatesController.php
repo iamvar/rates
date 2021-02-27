@@ -22,21 +22,12 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class RatesController extends AbstractController
 {
-    private EntityManagerInterface $em;
-    private ActualRateRepository $actualRateRepository;
-    private SerializerInterface $serializer;
-    private RatesLoaderService $rateLoaderService;
-
     public function __construct(
-        EntityManagerInterface $em,
-        ActualRateRepository $actualRateRepository,
-        SerializerInterface $serializer,
-        RatesLoaderService $rateLoaderService
+        private EntityManagerInterface $em,
+        private ActualRateRepository $actualRateRepository,
+        private SerializerInterface $serializer,
+        private RatesLoaderService $rateLoaderService,
     ) {
-        $this->em = $em;
-        $this->actualRateRepository = $actualRateRepository;
-        $this->serializer = $serializer;
-        $this->rateLoaderService = $rateLoaderService;
     }
 
     /**

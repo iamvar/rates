@@ -17,7 +17,8 @@ class RatesDTO implements IteratorAggregate
     /**
      * @return ArrayIterator|RateDTO[]
      */
-    public function getIterator() {
+    public function getIterator(): ArrayIterator
+    {
         return new ArrayIterator($this->rates);
     }
 }
