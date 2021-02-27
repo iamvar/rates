@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Iamvar\Rates\Service\RateLoader;
+namespace Iamvar\Rates\Services\RateLoader;
 
 use DateTimeImmutable;
-use Iamvar\Rates\Service\RateLoader\DTO\RateDTO;
-use Iamvar\Rates\Service\RateLoader\DTO\RatesDTO;
-use Iamvar\Rates\Service\RateLoader\Exception\ParseException;
+use Iamvar\Rates\Services\RateLoader\DTO\RateDTO;
+use Iamvar\Rates\Services\RateLoader\DTO\RatesDTO;
+use Iamvar\Rates\Services\RateLoader\Exception\ParseException;
 
 /**
  * parses json content from api.coindesk.com for BTC -> USD rate

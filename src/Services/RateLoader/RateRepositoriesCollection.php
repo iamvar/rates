@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Iamvar\Rates\Service\RateLoader;
+namespace Iamvar\Rates\Services\RateLoader;
 
-use Iamvar\Rates\Service\RateLoader\Exception\UnknownSourceException;
+use Iamvar\Rates\Services\RateLoader\Exception\UnknownSourceException;
 
 class RateRepositoriesCollection
 {

@@ -1,18 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Iamvar\Rates\Service\RateLoader;
+namespace Iamvar\Rates\Services\RateLoader;
 
-use GuzzleHttp\Client;
-use Iamvar\Rates\Service\RateLoader\Exception\ObtainContentException;
+use Iamvar\Rates\Services\RateLoader\Exception\ObtainContentException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ContentObtainer implements ContentObtainerInterface
 {
-    private Client $client;
-
-    public function __construct() {
-        $this->client = new Client();
+    public function __construct(private HttpClientInterface $client) {
     }
 
     public function getContent(string $url): string
@@ -23,6 +20,6 @@ class ContentObtainer implements ContentObtainerInterface
             throw new ObtainContentException("Error while obtaining content from {$url}");
         }
 
-        return $response->getBody()->getContents();
+        return $response->getContent();
     }
 }

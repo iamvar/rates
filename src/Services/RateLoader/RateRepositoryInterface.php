@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Iamvar\Rates\Service\RateLoader;
+namespace Iamvar\Rates\Services\RateLoader;
 
-use Iamvar\Rates\Service\RateLoader\DTO\RatesDTO;
+use Iamvar\Rates\Services\RateLoader\DTO\RatesDTO;
 
 interface RateRepositoryInterface {
     public function getRates(): RatesDTO;

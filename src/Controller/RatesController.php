@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Iamvar\Rates\Entity\Rate;
 use Iamvar\Rates\Repository\ActualRateRepository;
-use Iamvar\Rates\Service\RateLoader\RatesLoaderService;
+use Iamvar\Rates\Services\RateLoader\RatesLoaderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

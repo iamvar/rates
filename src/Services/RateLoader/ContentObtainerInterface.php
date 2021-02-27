@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Iamvar\Rates\Service\RateLoader;
+namespace Iamvar\Rates\Services\RateLoader;
 
 interface ContentObtainerInterface
 {
