@@ -47,7 +47,7 @@ class ActualRateRepository
             $result[$key] = new ActualRateDTO(
                 $row[Rate::PROP_BASE_CURRENCY],
                 $row[Rate::PROP_QUOTE_CURRENCY],
-                (float)$row[Rate::PROP_RATE]
+                (string)$row[Rate::PROP_RATE]
             );
         }
 
