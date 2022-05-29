@@ -5,9 +5,7 @@ namespace Iamvar\Rates\RateLoader\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use Iamvar\Rates\Entity\Rate;
-use Iamvar\Rates\Entity\Source;
-use Iamvar\Rates\EntityManager\RateEntityManager;
+use Iamvar\Rates\Rate\Entity\Rate;
 
 /**
  * gets data from rates repositories like ecb and saves it in the database
@@ -41,8 +39,7 @@ class RateLoader
                     $source->getDefaultWeight()
                 );
             }
-            dd($rates);
-//        $this->rateEntityManager->save(...$rates);
+            $this->rateEntityManager->save(...$rates);
         }
     }
 }

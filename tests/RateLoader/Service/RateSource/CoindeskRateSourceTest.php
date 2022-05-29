@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Iamvar\Rates\Tests\RateLoader\Service\RateSource;
 
 use Iamvar\Rates\RateLoader\DTO\RateDTO;
+use Iamvar\Rates\RateLoader\DTO\RateDTOCollection;
 use Iamvar\Rates\RateLoader\Service\RateSource\CoindeskRateSource;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -30,10 +31,21 @@ RESPONSE;
             new MockResponse($response),
         ]);
 
-        $repository = new CoindeskRateSource($client);
+        $coindesk = new CoindeskRateSource($client);
         $rate1 = new RateDTO('BTC', 'USD', '11302.8875', new \DateTimeImmutable('2020-09-03'));
         $rate2 = new RateDTO('BTC', 'USD', '10292.5983', new \DateTimeImmutable('2020-09-04'));
-        $expected = new RatesDTO($rate1, $rate2);
-        $this->assertEquals($expected, $repository->getRates());
+        $expected = new RateDTOCollection($rate1, $rate2);
+        $this->assertEquals($expected, $coindesk->getRates());
+    }
+
+    public function testInvalidResponse(): void
+    {
+        $client = new MockHttpClient([
+            new MockResponse('{}'),
+        ]);
+
+        $this->expectException(\UnexpectedValueException::class);
+        $coindesk = new CoindeskRateSource($client);
+        $coindesk->getRates();
     }
 }

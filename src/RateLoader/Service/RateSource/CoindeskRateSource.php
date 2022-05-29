@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace Iamvar\Rates\RateLoader\Service\RateSource;
 
-use DateTimeImmutable;
 use Iamvar\Rates\RateLoader\DTO\RateDTO;
-use Iamvar\Rates\RateLoader\DTO\RatesDTO;
+use Iamvar\Rates\RateLoader\DTO\RateDTOCollection;
 use Iamvar\Rates\RateLoader\RateSourceInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -41,7 +40,7 @@ class CoindeskRateSource implements RateSourceInterface
         return 'coindesk';
     }
 
-    public function getRates(): RatesDTO
+    public function getRates(): RateDTOCollection
     {
         $rates = [];
         foreach ($this->parseContent() as $date => $rate) {
@@ -49,11 +48,11 @@ class CoindeskRateSource implements RateSourceInterface
                 self::BASE_CURRENCY,
                 self::QUOTE_CURRENCY,
                 (string)$rate,
-                new DateTimeImmutable($date)
+                new \DateTimeImmutable($date)
             );
         }
 
-        return new RatesDTO(...$rates);
+        return new RateDTOCollection(...$rates);
     }
 
     private function parseContent(): array
@@ -62,7 +61,7 @@ class CoindeskRateSource implements RateSourceInterface
 
         $contentArray = $response->toArray();
         if (!isset($contentArray['bpi']) || !is_array($contentArray['bpi'])) {
-            throw new \HttpResponseException('Could not find bpi section in json');
+            throw new \UnexpectedValueException('Could not find bpi section in json');
         }
 
         return $contentArray['bpi'];

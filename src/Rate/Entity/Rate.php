@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Iamvar\Rates\Rate\Entity;
 
-use DateTime;
-use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Iamvar\Rates\App\Doctrine\Types\MoneyType;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'rates')]
@@ -15,7 +14,7 @@ class Rate
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, options: ['comment' => 'date when the rate was set'])]
-    private DateTimeInterface $fromDate;
+    private \DateTimeInterface $fromDate;
 
     #[ORM\Id]
     #[ORM\Column(type: Types::STRING, length: 50)]
@@ -30,24 +29,24 @@ class Rate
     #[ORM\JoinColumn(name: 'source', referencedColumnName: 'name')]
     private string $source;
 
-    #[ORM\Column(type: Types::DECIMAL)]
-    private float $rate;
+    #[ORM\Column(type: MoneyType::KEY)]
+    private string $rate;
 
     #[ORM\Column(type: Types::SMALLINT, options: ['unsigned' => true, 'comment' => 'bigger weight will be considered in case of concurrent rates from different sources'])]
     private int $weight;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeInterface $created;
+    private \DateTimeInterface $created;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeInterface $updated;
+    private \DateTimeInterface $updated;
 
     public function __construct(
         string $source,
         string $baseCurrency,
         string $quoteCurrency,
-        float $rate,
-        DateTimeInterface $fromDate,
+        string $rate,
+        \DateTimeInterface $fromDate,
         int $weight,
     ) {
         $this->fromDate = new DateTimeStringable($fromDate->format(DATE_ATOM));

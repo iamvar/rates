@@ -1,11 +1,15 @@
 <?php
 
+use Iamvar\Rates\App\Doctrine\Types\MoneyType;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $container) {
     $config = [
         'dbal' => [
             'url' => '%env(resolve:DATABASE_URL)%',
+            'types' => [
+                MoneyType::KEY => MoneyType::class,
+            ],
         ],
         'orm' => [
             'auto_generate_proxy_classes' => true,

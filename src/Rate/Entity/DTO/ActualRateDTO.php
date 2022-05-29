@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Iamvar\Rates\Entity\DTO;
+namespace Iamvar\Rates\Rate\Entity\DTO;
 
 class ActualRateDTO
 {

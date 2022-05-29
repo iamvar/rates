@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'iamvar:fetch-rates',
+    name: 'iamvar:rates:fetch',
     description: 'Fetch rates from available sources'
 )]
 class FetchRatesCommand extends Command

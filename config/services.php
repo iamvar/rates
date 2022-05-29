@@ -17,7 +17,6 @@ return static function(ContainerConfigurator $configurator) {
 
     $services->load('Iamvar\\Rates\\', '../src/**/Service/*');
     $services->load('Iamvar\\Rates\\', '../src/**/Command/*');
-    $services->load('Iamvar\\Rates\\', '../src/**/Controller/*');
 
     $services->get(RateSourceCollection::class)->args(
             [tagged_locator($ratesSourceTag, 'key', 'getName')]

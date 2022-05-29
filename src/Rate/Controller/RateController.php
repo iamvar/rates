@@ -55,9 +55,7 @@ final class RateController extends AbstractController
 //            [],
 //            [Rate::PROP_FROM_DATE => 'DESC', Rate::PROP_SOURCE => 'DESC', Rate::PROP_WEIGHT => 'DESC']
 //        );
-//        $data = $this->serializer->serialize($rates, JsonEncoder::FORMAT);
-        $data = [];
-        return new JsonResponse($data, Response::HTTP_OK, [], true);
+        return $this->json($rates);
     }
 //
 //    /**

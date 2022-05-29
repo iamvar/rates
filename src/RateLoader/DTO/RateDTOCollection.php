@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Iamvar\Rates\RateLoader\DTO;
 
 use ArrayIterator;
-use IteratorAggregate;
 
-class RatesDTO implements IteratorAggregate
+class RateDTOCollection implements \IteratorAggregate
 {
     private array $rates;
 

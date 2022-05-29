@@ -5,7 +5,7 @@ namespace Iamvar\Rates\RateLoader\Service\RateSource;
 
 use DateTimeImmutable;
 use Iamvar\Rates\RateLoader\DTO\RateDTO;
-use Iamvar\Rates\RateLoader\DTO\RatesDTO;
+use Iamvar\Rates\RateLoader\DTO\RateDTOCollection;
 use Iamvar\Rates\RateLoader\RateSourceInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -44,7 +44,7 @@ class EcbRateSource implements RateSourceInterface
         return 'ecb';
     }
 
-    public function getRates(): RatesDTO
+    public function getRates(): RateDTOCollection
     {
         $xml = $this->client->request('GET', $this->url)->getContent();
 
@@ -53,13 +53,13 @@ class EcbRateSource implements RateSourceInterface
         $cube = $crawler->filter("gesmes|Envelope default|Cube default|Cube");
         $date = new DateTimeImmutable($cube->attr('time'));
 
-        $ratesArray = $cube->children()->each(fn($node, $i) => new RateDTO(
+        $rates = $cube->children()->each(fn($node, $i) => new RateDTO(
             self::BASE_CURRENCY,
             $node->attr('currency'),
             (string)$node->attr('rate'),
             $date
         ));
 
-        return new RatesDTO(...$ratesArray);
+        return new RateDTOCollection(...$rates);
     }
 }
