@@ -10,12 +10,9 @@ Currently supports
 * https://www.ecb.europa.eu
 * https://api.coindesk.com
 
-To add additional source, just implement RateSourceInterface
+To add additional source, you need just implement RateSourceInterface, symfony ServiceLocator will do the trick. 
 
-It requires PHP 8
+More detailed instructions how to run it will be provided later, most probably with docker files.
 
-More detailed instructions how to build it will be provided later, most probably with Dockerfile
-
-* composer install
-* npm install -g yarn
-* yarn install
+Project was updated to the latest symfony/doctrine/php version and now is in maintenance mode due to significant backward incompatibilities.
+Tests were updated to use pestphp framework.

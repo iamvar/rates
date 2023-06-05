@@ -49,7 +49,7 @@ class Rate
         \DateTimeInterface $fromDate,
         int $weight,
     ) {
-        $this->fromDate = new DateTimeStringable($fromDate->format(DATE_ATOM));
+        $this->fromDate = $fromDate;
         $this->baseCurrency = $baseCurrency;
         $this->quoteCurrency = $quoteCurrency;
         $this->source = $source;
@@ -60,21 +60,21 @@ class Rate
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created = new DateTime('NOW');
+        $this->created = new \DateTime('NOW');
     }
 
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated = new DateTime('NOW');
+        $this->updated = new \DateTime('NOW');
     }
 
-    public function getCreated(): DateTimeInterface
+    public function getCreated(): \DateTimeInterface
     {
         return $this->created;
     }
 
-    public function getUpdated(): DateTimeInterface
+    public function getUpdated(): \DateTimeInterface
     {
         return $this->updated;
     }
@@ -84,12 +84,12 @@ class Rate
         return $this->weight;
     }
 
-    public function getRate(): float
+    public function getRate(): string
     {
         return $this->rate;
     }
 
-    public function getFromDate(): DateTimeInterface
+    public function getFromDate(): \DateTimeInterface
     {
         return $this->fromDate;
     }
