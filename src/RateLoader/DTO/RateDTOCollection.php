@@ -7,7 +7,7 @@ use ArrayIterator;
 
 class RateDTOCollection implements \IteratorAggregate
 {
-    private array $rates;
+    private readonly array $rates;
 
     public function __construct(RateDTO ...$rates) {
         $this->rates = $rates;

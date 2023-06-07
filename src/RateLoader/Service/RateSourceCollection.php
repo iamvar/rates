@@ -8,11 +8,9 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class RateSourceCollection
 {
-    private ServiceLocator $locator;
-
-    public function __construct(ServiceLocator $locator)
-    {
-        $this->locator = $locator;
+    public function __construct(
+        private readonly ServiceLocator $locator
+    ) {
     }
 
     /**

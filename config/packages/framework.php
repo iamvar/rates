@@ -1,18 +1,14 @@
 <?php
 
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Config\FrameworkConfig;
 
-return static function (ContainerConfigurator $container) {
-    $config = [
-        'secret' => '%env(APP_SECRET)%',
-        'http_method_override' => false,
-        'php_errors' => ['log' => true],
-    ];
+return static function (FrameworkConfig $framework) {
+    $framework->secret('%env(APP_SECRET)%')
+        ->httpMethodOverride(false)
+        ->phpErrors(['log' => true]);
 
-    if ('test' === $container->env()) {
-        $config['test'] = true;
-    }
-
-    $container->extension('framework', $config);
+    $framework->router([
+        'strict_requirements' => null,
+    ]);
 };
 

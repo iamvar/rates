@@ -11,15 +11,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * parses json content from api.coindesk.com for BTC -> USD rate
  * {
- * "bpi":{
- * "2020-09-03":11302.8875,
- * "2020-09-04":10292.5983
- * },
- * "disclaimer":"This data was produced from the CoinDesk Bitcoin Price Index. BPI value data returned as USD.",
- * "time":{
- * "updated":"May 5, 2022 00:03:00 UTC",
- * "updatedISO":"2022-05-05T00:03:00+00:00"
- * }
+ *   "bpi":{
+ *     "2020-09-03":11302.8875,
+ *     "2020-09-04":10292.5983
+ *   },
+ *   "disclaimer":"This data was produced from the CoinDesk Bitcoin Price Index. BPI value data returned as USD.",
+ *   "time":{
+ *     "updated":"May 5, 2022 00:03:00 UTC",
+ *     "updatedISO":"2022-05-05T00:03:00+00:00"
+ *   }
  * }
  */
 class CoindeskRateSource implements RateSourceInterface
@@ -31,8 +31,7 @@ class CoindeskRateSource implements RateSourceInterface
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly string $url = self::DEFAULT_URL,
-    )
-    {
+    ) {
     }
 
     public static function getName(): string
@@ -60,10 +59,11 @@ class CoindeskRateSource implements RateSourceInterface
         $response = $this->client->request('GET', $this->url);
 
         $contentArray = $response->toArray();
-        if (!isset($contentArray['bpi']) || !is_array($contentArray['bpi'])) {
-            throw new \UnexpectedValueException('Could not find bpi section in json');
+        $bpi = $contentArray['bpi'] ?? null;
+        if (!is_array($bpi)) {
+            throw new \ValueError('Expect bpi section to be json object');
         }
 
-        return $contentArray['bpi'];
+        return $bpi;
     }
 }
